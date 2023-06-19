@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 extension FileTranslator {
 
@@ -105,6 +105,8 @@ extension FileTranslator {
             }
             return try areRefsToObjectishSchemaAndSupported(schemas)
         case .not:
+            return false
+        default:
             return false
         }
     }

@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// Utilities for asking questions about OpenAPI.Content
 extension FileTranslator {
@@ -96,9 +96,21 @@ extension FileTranslator {
                 "Custom encoding for JSON content",
                 foundIn: "\(foundIn), content \(contentKey.rawValue)"
             )
+            let contentSchema: Either<JSONReference<JSONSchema>, JSONSchema>?
+            if let schema = contentValue.schema {
+                if case let .a(a) = schema {
+                    contentSchema = Either(a.jsonReference)
+                } else if case let .b(b) = schema {
+                    contentSchema = Either(b)
+                } else {
+                    contentSchema = nil
+                }
+            } else {
+                contentSchema = nil
+            }
             return .init(
                 contentType: contentType,
-                schema: contentValue.schema
+                schema: contentSchema
             )
         } else if let (contentKey, _) = map.first(where: { $0.key.isText }),
             let contentType = ContentType(contentKey.typeAndSubtype)

@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A wrapper of an OpenAPI operation that includes the information
 /// about the parent containers of the operation, such as its path
@@ -132,7 +132,14 @@ extension OperationDescription {
     /// Returns parameters from both the path item level
     /// and the operation level.
     var allParameters: [UnresolvedParameter] {
-        pathParameters + operation.parameters
+        (pathParameters + operation.parameters).map { element in
+            let newElement: UnresolvedParameter
+            switch element {
+            case let .a(a): newElement = Either(a.jsonReference)
+            case let .b(b): newElement = Either(b)
+            }
+            return newElement
+        }
     }
 
     /// Returns all parameters by resolving any parameter references first.

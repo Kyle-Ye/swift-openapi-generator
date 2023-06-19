@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A container for an OpenAPI request body and its computed Swift type usage.
 struct TypedRequestBody {
@@ -42,8 +42,13 @@ extension FileTranslator {
         guard let requestBody = operation.operation.requestBody else {
             return nil
         }
+        let body: Either<JSONReference<OpenAPI.Request>, OpenAPI.Request>
+        switch requestBody {
+        case .a(let a): body = Either(a.jsonReference)
+        case .b(let b): body = Either(b)
+        }
         return try typedRequestBody(
-            from: requestBody,
+            from: body,
             inParent: operation.inputTypeName
         )
     }

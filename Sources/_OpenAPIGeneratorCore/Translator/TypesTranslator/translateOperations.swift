@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 extension TypesFileTranslator {
 
@@ -73,8 +73,20 @@ extension TypesFileTranslator {
                 ]
             )
         }
+        let body: Either<JSONReference<OpenAPI.Request>, OpenAPI.Request>?
+        if let requestBody = description.operation.requestBody {
+            if case let .a(a) = requestBody {
+                body = Either(a.jsonReference)
+            } else if case let .b(b) = requestBody {
+                body = Either(b)
+            } else {
+                body = nil
+            }
+        } else {
+            body = nil
+        }
         let bodyProperty = try parseRequestBodyAsProperty(
-            for: description.operation.requestBody,
+            for: body,
             inParent: inputTypeName
         )
 

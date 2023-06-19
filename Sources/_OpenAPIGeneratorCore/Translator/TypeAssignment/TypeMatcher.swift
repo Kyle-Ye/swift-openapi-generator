@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A set of functions that match Swift types onto OpenAPI types.
 struct TypeMatcher {
@@ -235,6 +235,8 @@ struct TypeMatcher {
             return nil
         case .reference, .not, .all, .any, .one:
             // never built-in
+            return nil
+        default:
             return nil
         }
         return typeName.asUsage
