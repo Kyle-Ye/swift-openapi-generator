@@ -86,7 +86,8 @@ let package = Package(
             name: "OpenAPIGeneratorCoreTests",
             dependencies: [
                 "_OpenAPIGeneratorCore",
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
 
         // GeneratorReferenceTests
