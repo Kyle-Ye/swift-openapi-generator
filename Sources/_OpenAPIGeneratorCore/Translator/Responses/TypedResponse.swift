@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A container for an OpenAPI response and its computed Swift type usage.
 struct TypedResponse {
@@ -43,7 +43,7 @@ extension FileTranslator {
         let isInlined: Bool
         switch unresolvedResponse {
         case .a(let reference):
-            typeName = try TypeAssigner.typeName(for: reference)
+            typeName = try TypeAssigner.typeName(for: reference.jsonReference)
             response = try components.lookup(reference)
             isInlined = false
         case .b(let _response):

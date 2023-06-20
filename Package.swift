@@ -71,7 +71,7 @@ let package = Package(
         .target(
             name: "_OpenAPIGeneratorCore",
             dependencies: [
-                .product(name: "OpenAPIKit30", package: "OpenAPIKit"),
+                .product(name: "OpenAPIKit", package: "OpenAPIKit"),
                 .product(name: "Algorithms", package: "swift-algorithms"),
                 .product(name: "Yams", package: "Yams"),
                 .product(name: "SwiftSyntax", package: "swift-syntax"),

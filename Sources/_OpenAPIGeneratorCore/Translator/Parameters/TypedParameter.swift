@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A container for an OpenAPI parameter and its computed Swift type usage.
 struct TypedParameter {
@@ -132,7 +132,12 @@ extension FileTranslator {
         let codingStrategy: CodingStrategy
         switch parameter.schemaOrContent {
         case let .a(schemaContext):
-            schema = schemaContext.schema
+            let contextSchema: Either<JSONReference<JSONSchema>, JSONSchema>
+            switch schemaContext.schema {
+            case let .a(a): contextSchema = Either(a.jsonReference)
+            case let .b(b): contextSchema = Either(b)
+            }
+            schema = contextSchema
             codingStrategy = .text
 
             // Check supported exploded/style types

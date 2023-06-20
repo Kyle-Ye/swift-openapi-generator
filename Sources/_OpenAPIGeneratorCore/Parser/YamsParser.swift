@@ -12,7 +12,7 @@
 //
 //===----------------------------------------------------------------------===//
 import Yams
-import OpenAPIKit30
+import OpenAPIKit
 import Foundation
 
 /// A parser that uses the Yams library to parse the provided
@@ -33,13 +33,13 @@ struct YamsParser: ParserProtocol {
         struct OpenAPIVersionError: Error, CustomStringConvertible, LocalizedError {
             var versionString: String
             var description: String {
-                "Unsupported document version: \(versionString). Please provide a document with OpenAPI versions in the 3.0.x set."
+                "Unsupported document version: \(versionString). Please provide a document with OpenAPI versions in the 3.1.x set."
             }
         }
 
         struct OpenAPIMissingVersionError: Error, CustomStringConvertible, LocalizedError {
             var description: String {
-                "No openapi key found, please provide a valid OpenAPI document with OpenAPI versions in the 3.0.x set."
+                "No openapi key found, please provide a valid OpenAPI document with OpenAPI versions in the 3.1.x set."
             }
         }
 
@@ -52,7 +52,7 @@ struct YamsParser: ParserProtocol {
             throw OpenAPIMissingVersionError()
         }
         switch openAPIVersion {
-        case "3.0.0", "3.0.1", "3.0.2", "3.0.3":
+        case "3.1.0":
             break
         default:
             throw OpenAPIVersionError(versionString: "openapi: \(openAPIVersion)")

@@ -11,7 +11,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 //===----------------------------------------------------------------------===//
-import OpenAPIKit30
+import OpenAPIKit
 
 /// A container for an OpenAPI response header and its computed
 /// Swift type usage.
@@ -72,8 +72,13 @@ extension FileTranslator {
             return []
         }
         return try headers.compactMap { name, header in
-            try typedResponseHeader(
-                from: header,
+            let newHeader: Either<JSONReference<OpenAPI.Header>, OpenAPI.Header>
+            switch header {
+            case .a(let a): newHeader = Either(a.jsonReference)
+            case .b(let b): newHeader = Either(b)
+            }
+            return try typedResponseHeader(
+                from: newHeader,
                 named: name,
                 inParent: parent
             )
@@ -108,7 +113,12 @@ extension FileTranslator {
 
         switch header.schemaOrContent {
         case let .a(schemaContext):
-            schema = schemaContext.schema
+            let contextSchema: Either<JSONReference<JSONSchema>, JSONSchema>
+            switch schemaContext.schema {
+            case let .a(a): contextSchema = Either(a.jsonReference)
+            case let .b(b): contextSchema = Either(b)
+            }
+            schema = contextSchema
             codingStrategy = .text
         case let .b(contentMap):
             guard
