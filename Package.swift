@@ -17,7 +17,12 @@ import PackageDescription
 let package = Package(
     name: "swift-openapi-generator",
     platforms: [
-        .macOS(.v10_15)
+        .macOS(.v10_15),
+
+        // The platforms below are not currently supported for running
+        // the generator itself. We include them here to allow the generator
+        // to emit a more descriptive compiler error.
+        .iOS("99"), .tvOS("99"), .watchOS("99"),
     ],
     products: [
         .executable(name: "swift-openapi-generator", targets: ["swift-openapi-generator"]),
@@ -47,7 +52,7 @@ let package = Package(
         // Read OpenAPI documents
         .package(
             url: "https://github.com/mattpolzin/OpenAPIKit.git",
-            exact: "3.0.0-alpha.6"
+            exact: "3.0.0-alpha.7"
         ),
         .package(
             url: "https://github.com/jpsim/Yams.git",
